@@ -5,3 +5,5 @@ Heres a diagram of whats going on in this data collection system
 ## Problems
 
 * LDR error: it seems like during peak dyalight hours, the LDR acts like a short. Needs eror handling here.
+  ![image](https://github.com/user-attachments/assets/283795f4-e31e-4d73-8b6a-69be3991f9df)
+
