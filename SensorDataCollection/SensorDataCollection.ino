@@ -6,12 +6,15 @@
 #include <stdio.h>
 #include "Calibration.h"
 
+#define LDR_PIN 26
+
 #define LAMP_PIN 20
 #define BUTTON_PLUS 13
 #define BUTTON_MINUS 14
 
 #define TRIG_PIN 17
 #define ECHO_PIN 16
+#define SWITCH_PIN 15
 
 int prevlampStatus, prevlampBrightness;
 
@@ -21,11 +24,14 @@ void setup() {
   Serial.begin(115200);
 
   pinMode(LAMP_PIN, OUTPUT);
+
   pinMode(BUTTON_PLUS, INPUT);
   pinMode(BUTTON_MINUS, INPUT);
+  pinMode(SWITCH_PIN, INPUT);
 
   pinMode(TRIG_PIN, OUTPUT);
   pinMode(ECHO_PIN, INPUT);
+  pinMode(LDR_PIN, INPUT);
 
   analogReadResolution(12); 
 
@@ -34,7 +40,6 @@ void setup() {
 
 void loop() {
   unsigned long currentMillis = millis();
-  bool lampStatus = toggleLight(); 
   bool motion = motionSensorHR_S04();
   float ambientLight = Lux_Value(); 
   int lampBrightness = brightnessSelect();
@@ -51,7 +56,6 @@ void loop() {
 }
 
 void logData(){ // prints data into serial port to be colleted by the python script
-  bool lampStatus = toggleLight(); // 0 = off, 1 = on
   bool motion = motionSensorHR_S04(); // true = motion detected, false = motion undetected
   float ambientLight = Lux_Value(); 
   int lampBrightness = brightnessSelect();
