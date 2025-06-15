@@ -28,9 +28,9 @@
 #define SWITCH_PIN 15
 
 float prevDistanceCm = 0;
-int buttonPress = 0;
-int brightness_state[5] { 51 , 102 , 153 , 204 , 255 }; // array of pwm brightnesses
-int cnt = 4;
+int lampStatus = 0;
+int brightness_state[6] {0, 51 , 102 , 153 , 204 , 255 }; // array of pwm brightnesses
+int brightness_no = 0; // brightness number 0-5
 
 int Lux_Value() { // calculates Lux value
   int   ldrRawData;
@@ -54,36 +54,43 @@ int Lux_Value() { // calculates Lux value
 
 int brightnessSelect(){ // allows user to turn brightness of lamp up and down with 2 buttons
 
-  int button_plus = digitalRead(BUTTON_PLUS);
-  int button_minus = digitalRead(BUTTON_MINUS);
-
-  if (buttonPress == 1) {
-    if (digitalRead(BUTTON_PLUS) == 1) {
-      cnt++;
-      if (cnt > 4) {
-        cnt = 4;
-        debug("Brightness highest ");
-      }
-      analogWrite(LAMP_PIN,brightness_state[cnt]);
-      debugln("Turning Brighness UP ");
+  // checks to see if lamp is turned on
+  if (lampStatus == 0) { //if the lamp is off it can be turned on
+    if (digitalRead(SWITCH_PIN) == 1) {
+      lampStatus++;
+      brightness_no = 5; // sets lamp to full brightness
+      debugln("Lamp has been turned on!");
       delay(300);
     }
+  }
+  if (lampStatus == 1) {
+    if(digitalRead(SWITCH_PIN) == 1) {
+      lampStatus--;
+      brightness_no = 0;
+      debugln("Lamp has been turned off!");
+      delay(300);
+    }
+  }
+
+
+  // User can turn up or down brightness
+  if (lampStatus == 1) {
+    if (digitalRead(BUTTON_PLUS) == 1) {
+      brightness_no++;
+      if (brightness_no > 5) { brightness_no = 5; debug("Maximum Brightness Reached"); }
+      debugln("Turning Brighness UP ");
+      delay(50);
+      }
 
     if (digitalRead(BUTTON_MINUS) == 1) {
-      cnt--;
-      if (cnt < 0) {
-        cnt = 0;
-        debug("Brightness Lowest ");
-      }
-      analogWrite(LAMP_PIN,brightness_state[cnt]);
+      brightness_no--;
+      if (brightness_no < 1) { brightness_no = 1; debug("Minimum Brightness Reached"); }
       debugln("Turning Brighness DOWN ");
-      delay(300);
+      delay(50);
     } 
-  } else { 
-    analogWrite(LAMP_PIN,0); 
-    }
-  
-  return cnt;
+  }
+  analogWrite(LAMP_PIN,brightness_state[brightness_no]); 
+  return brightness_no;
 }
 
 bool motionSensorHR_S04(){ // senses motion with a HR_S04
@@ -109,34 +116,7 @@ bool motionSensorHR_S04(){ // senses motion with a HR_S04
     status = false;
   }
   delay(100);
-
   prevDistanceCm = distanceCm;
-
   return status;
 }
-
-bool toggleLight(){ // turns lamp on and off with button
-  int brightness_state[5];
-  int cnt;
-
-  if (buttonPress == 0) { //if the lamp is off it can be turned on
-    if (digitalRead(SWITCH_PIN) == 1) {
-      buttonPress++;
-      digitalWrite(LAMP_PIN,HIGH);
-      cnt = 4;
-      debugln("Lamp has been turned on!");
-      delay(500);
-    }
-  }
-  if (buttonPress == 1) {
-    if(digitalRead(SWITCH_PIN) == 1) {
-      buttonPress--;
-      digitalWrite(LAMP_PIN,LOW);
-      debugln("Lamp has been turned off!");
-      delay(500);
-    }
-  }
-  return buttonPress;
-}
-
 
