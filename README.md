@@ -1,6 +1,6 @@
 # Smart-Lamp
 
-A Raspberry Pi Pico and ESP32-based smart lamp that learns user behavior to predictively control lighting using motion, ambient light, and time of day.
+A Raspberry Pi Pico based smart lamp that learns user behavior to predictively control lighting using motion, ambient light, and time of day.
 
 ## ✨ Features
 
@@ -13,11 +13,10 @@ A Raspberry Pi Pico and ESP32-based smart lamp that learns user behavior to pred
 
   ### 1) Hardware:
 
-  Raspberry Pi Pico
-  ESP32
-  HR-S04 (I don't have a PIR sensor)
-  LDR
-  Buttons
+  * Raspberry Pi Pico
+  * HR-S04 (I don't have a PIR sensor)
+  * LDR
+  * Buttons
 
   ### 2) Data Collection
 
