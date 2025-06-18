@@ -14,7 +14,6 @@
 #define BUTTON_MINUS 14
 
 bool predicted_lamp_status = 0;
-int predicted_brightness = 0; 
 
 bool manual_override = false;
 unsigned long prevManualToggle = 0;
@@ -22,65 +21,79 @@ unsigned long prevManualToggle = 0;
 static bool last_lamp_status = false; // Track previous state for transitions
 bool lampStatus = false;
 
-int fading_rate = 5;
+const int fading_rate = 5;
 bool isFading = false;
 
-int brightness_state[6] {0, 51 , 102 , 153 , 204 , 255 }; // array of pwm brightnesses
+const int brightness_state[6] {0, 51 , 102 , 153 , 204 , 255 }; // array of pwm brightnesses
+int last_brightness_no;
 int brightness_no = 0; // brightness number 0-5
 
-
-int brightnessSelect(){ // allows user to turn brightness of lamp up and down with 2 buttons
+void manualOverrideTimeout() {
   currentMillis = millis();
-
-    // User can turn up or down brightness
-  if (lampStatus == true) {
-    if (digitalRead(BUTTON_PLUS) == 1) {
-      brightness_no++;
-      if (brightness_no > 5) { brightness_no = 5; debugLogic("Maximum Brightness Reached"); }
-        debugLogicln("Turning Brighness UP ");
-        delay(50);
-      }
-
-  if (digitalRead(BUTTON_MINUS) == 1) {
-    brightness_no--;
-    if (brightness_no < 1) { brightness_no = 1; debugLogic("Minimum Brightness Reached"); }
-      debugLogicln("Turning Brighness DOWN ");
-      delay(50);
-    } 
+  if (currentMillis - prevManualToggle >= 3000){ // if its time for automatic light control...
+    manual_override = false;
   }
-
-  
-
-  analogWrite(LAMP_PIN,brightness_state[brightness_no]); 
-  return brightness_no;
 }
 
-void lampFade(bool fading_status) { //fades lamp in and out using pwm
+void lampFade(bool fading_status, int starting_brightness, int final_brightness) { //fades lamp in and out using pwm
   isFading = true;
   int fade_number;
 
   if (fading_status == true) {
-    for (fade_number = 0 ; fade_number <=255 ; fade_number++){
+    for (fade_number = starting_brightness ; fade_number <= final_brightness ; fade_number++){
       analogWrite(LAMP_PIN, fade_number);
       debugLogic(" Lamp Brightness: ");
       debugLogic(fade_number);
       debugLogicln("/255 ");
       delay(fading_rate);
-      if (digitalRead(SWITCH_PIN) == HIGH) break; // Check for manual override during fade
+      // if (digitalRead(SWITCH_PIN) == HIGH) break; // Check for manual override during fade
     }
   } 
   else {
-    for (fade_number = 255 ; fade_number >=0 ; fade_number--){
+    for (fade_number = starting_brightness ; fade_number >= final_brightness ; fade_number--){
       analogWrite(LAMP_PIN, fade_number);
       debugLogic(" Lamp Brightness: ");
       debugLogic(fade_number);
       debugLogicln("/255 ");
       delay(fading_rate);
-      if (digitalRead(SWITCH_PIN) == HIGH) break; // Check for manual override during fade
+      // if (digitalRead(SWITCH_PIN) == HIGH) break; // Check for manual override during fade
     }
   }
   isFading = false;
 }
+
+int brightnessSelect(int predicted_brightness) { 
+  currentMillis = millis();
+  if (lampStatus == true){
+    // manual toggle
+    if (digitalRead(BUTTON_PLUS) == 1) {
+      prevManualToggle = currentMillis;
+      last_brightness_no = brightness_no;
+      brightness_no = min(brightness_no + 1, 5);
+      manual_override = true;
+      debugLogic(" MANUAL: Brightness increased ");
+    }
+    else if (digitalRead(BUTTON_MINUS) == 1) {
+      prevManualToggle = currentMillis;
+      last_brightness_no = brightness_no;
+      brightness_no = max(brightness_no - 1, 0);
+      manual_override = true;
+      debugLogic(" MANUAL: Brightness increased ");
+    }
+
+    // manual override timeout
+    manualOverrideTimeout();
+
+    // auto toggle
+    if (manual_override == false) {
+      last_brightness_no = brightness_no;
+      brightness_no = predicted_brightness;
+    }
+  }
+  debugLogic(" Brightness: "); debugLogic(brightness_no); debugLogic(" , "); debugLogicln(predicted_brightness);
+  return brightness_no;
+}
+
 
 void toggleLamp(bool predicted_lamp_status){
   currentMillis = millis();
@@ -96,10 +109,7 @@ void toggleLamp(bool predicted_lamp_status){
     delay(100);  // Simple debounce (replace with millis() later)
   }
 
-  if (currentMillis - prevManualToggle >= 3000){ // if its time for automatic light control...
-    manual_override = false;
-    // debugLogic("MANUAL toggle false     ");
-  }
+  manualOverrideTimeout();
 
   //Auto toggling on
   if ((manual_override == false) && (!isFading) ) { // 
@@ -113,25 +123,29 @@ void toggleLamp(bool predicted_lamp_status){
     }
   }
 
-  if (lampStatus != last_lamp_status) { // handle fading between lamp state changes
+  if ( lampStatus != last_lamp_status ) { // handle fading between lamp state changes
     // State changed - apply fading
     if (lampStatus == true) {
-      lampFade(true); // Fade in
+      lampFade(true,0,255); // Fade in
     } else {
-      lampFade(false); // Fade out
+      lampFade(false,255,0); // Fade out
     }
     last_lamp_status = lampStatus;
   } 
+
+  else if ( brightness_no != last_brightness_no ) {
+    if (brightness_no > last_brightness_no) {
+      lampFade(true,brightness_state[last_brightness_no],brightness_state[brightness_no]); // Fade in
+    } else {
+      lampFade(false,brightness_state[last_brightness_no],brightness_state[brightness_no]); // Fade out
+    }
+    last_brightness_no = brightness_no;
+    }
   else {
 
 
-    if ( (lampStatus == true) && (!isFading) ) {
-      if (manual_override == true) {
-        analogWrite(LAMP_PIN,255);
-      } else {
-        // turn on lamp
-        analogWrite(LAMP_PIN,brightness_state[predicted_brightness]);
-      } 
+    if ( (lampStatus == true)  ) {
+        analogWrite(LAMP_PIN,brightness_state[brightness_no]);
     } else {
         //turn off lamp
         analogWrite(LAMP_PIN,0);
