@@ -15,10 +15,10 @@ extern const uint8_t ECHO_PIN;
 
 // Lamp State Structure
 struct SystemState {
-    bool manualOverride = false;   //bool manual_override = false;
-    bool isFading = false;          //bool isFading = false;
-    bool lastLampStatus = false;  //bool last_lamp_status = false;
-    bool currentLampStatus = false;        //bool lampStatus = false; 
+    bool manualOverride = false;  
+    bool isFading = false;          
+    bool lastLampStatus = false;  
+    bool currentLampStatus = false;     
 };
 
 //ML PREDICTIONS
@@ -32,7 +32,7 @@ struct Timeing {
     unsigned long prevMotionScan = 0;
     unsigned long prevManualToggle = 0;
     unsigned long prevAutoToggle = 0;
-    unsigned long prevLEDFlash = 0;  // timeing.prevLEDFlash
+    unsigned long prevLEDFlash = 0; 
 };
 
 extern unsigned long currentMillis;
