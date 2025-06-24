@@ -18,9 +18,11 @@ A Raspberry Pi Pico based smart lamp that learns user behavior to predictively c
   * LDR
   * Buttons
 
+    (Adding ,PIR motion sensor and ir remote with ir receiver for long distance manual overrides
+
   ### 2) Data Collection
 
-  Sensor data is gathered by the raspberry pi pico and sent over USB Serial (UART), coded in c/c++
+  Sensor data is gathered by the raspberry pi pico and sent over USB Serial (UART)
   
     Serial.print(lampStatus);
     Serial.print(",");
@@ -40,7 +42,7 @@ A Raspberry Pi Pico based smart lamp that learns user behavior to predictively c
 
   ### 4) Depployment
 
-  flash trained model onto the ESP32 for real time decisions
+  flash trained model onto the Pico for real time decisions
 
   🌟 Future Goals
 
