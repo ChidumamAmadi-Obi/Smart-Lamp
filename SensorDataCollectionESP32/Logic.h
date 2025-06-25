@@ -12,7 +12,6 @@
 
 extern const uint8_t  LAMP_PIN;
 
-const int fading_rate = 5;
 const int brightnessIndex[6] = {0, 51, 102, 153, 204, 255};
 static uint16_t IR_command = 0;
 
