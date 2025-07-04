@@ -20,10 +20,8 @@
 #define SOUND_SPEED               0.034
 
 extern const uint8_t LDR_PIN;
-extern const uint8_t TRIG_PIN;
-extern const uint8_t ECHO_PIN;
-
-float prevDistanceCm = 0;
+extern const uint8_t PIR_MOTION_PIN;
+bool motionSensorStatus = false;
 
 int Lux_Value() { // calculates Lux value
   currentMillis = millis();
@@ -48,31 +46,15 @@ int Lux_Value() { // calculates Lux value
 }
 
 
-bool motionSensorHR_S04(){ // senses motion with a HR_S04
-  bool motionSensorStatus;
+bool PIRmotionSensor(){ // senses motion with a PIR sensor
+  timeing.prevMotionScan = currentMillis;
+  motionSensorStatus = digitalRead(PIR_MOTION_PIN);
 
-    digitalWrite(TRIG_PIN, LOW);
-    delayMicroseconds(2); 
-    digitalWrite(TRIG_PIN, HIGH);
-    delayMicroseconds(10);
-    digitalWrite(TRIG_PIN, LOW);
-    
-
-    long duration = pulseIn(ECHO_PIN, HIGH);
-    float distanceCm = duration * 0.0344 / 2;
-
-    if ( ((distanceCm > 1) && (prevDistanceCm > 1)) && (abs(distanceCm - prevDistanceCm) > 3)){
-      debugCalln("!!! Movement detected !!!");
-      motionSensorStatus = true;
-    } 
-
-    else {
-      debugCalln("No Movement detected!");
-      motionSensorStatus = false;
-    }
-    delay(100);
-
-  prevDistanceCm = distanceCm;
+  if ( motionSensorStatus == HIGH ){
+    debugCalln("!!! Movement detected !!!");
+  } else {
+    debugCalln("No Movement detected!");
+  }
   return motionSensorStatus;
 }
  
