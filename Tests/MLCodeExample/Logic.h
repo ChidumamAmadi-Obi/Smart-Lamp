@@ -12,13 +12,11 @@
 
 #define FADING_RATE  5
 
-extern const uint8_t  SWITCH_PIN;
 extern const uint8_t  LAMP_PIN;
-extern const uint8_t  BUTTON_PLUS;
-extern const uint8_t  BUTTON_MINUS;
+
 
 const int brightnessIndex[6] = {0, 51, 102, 153, 204, 255};
-
+static uint8_t IR_command = 0;
 static bool manualOverride = false;
 
 void manualOverrideTimeout() {
@@ -69,14 +67,14 @@ void lampToggle(bool stateMachine){
 int brightnessSelect() { 
 
     // MANUAL TOGGLE
-    if (digitalRead(BUTTON_PLUS) == 1) {
+    if (IR_command == IR_BRIGHTEN) {
       manualOverride = true;
       timeing.prevManualToggle = currentMillis;
       state.currentBrightnessNumber = min(state.currentBrightnessNumber + 1, 5);
       debugLogic(" MANUAL: Brightness increased ");
       delay(50);
     }
-    else if (digitalRead(BUTTON_MINUS) == 1) {
+    else if (IR_command == IR_DIM) {
       manualOverride = true;
       timeing.prevManualToggle = currentMillis;
       state.currentBrightnessNumber = max(state.currentBrightnessNumber - 1, 0);
@@ -96,15 +94,16 @@ int brightnessSelect() {
 
 // handles lamp control
 void lampStateMachine() {
-  bool lamp_switch = digitalRead(SWITCH_PIN);
-  bool plus_button = digitalRead(BUTTON_PLUS);
-  bool minus_button = digitalRead(BUTTON_MINUS); 
+  if (IrReceiver.decode()) { // collects command from ir remote
+    IR_command = IrReceiver.decodedIRData.command;
+    IrReceiver.resume();
+  }
 
   if ( state.currentLampStatus == false ) { //lamp is off and brightness is 0
     state.currentBrightnessNumber = 0;
     analogWrite(LAMP_PIN,0);
 
-    if ( lamp_switch == HIGH ){ // manual
+    if ( IR_command == IR_ON ){ // manual
       lampToggle(state.currentLampStatus);
       manualOverride = true;
       timeing.prevManualToggle = currentMillis;
@@ -134,7 +133,7 @@ void lampStateMachine() {
     analogWrite(LAMP_PIN,brightnessIndex[state.currentBrightnessNumber]);
 
     if (!state.isFading) {
-      if ( lamp_switch == HIGH ){
+      if ( IR_command == IR_OFF ){
         lampToggle(state.currentLampStatus);
         manualOverride = true;
         timeing.prevManualToggle = currentMillis;
@@ -149,4 +148,5 @@ void lampStateMachine() {
   }
   debugLogic(" Lamp Status: ");    debugLogic(state.currentLampStatus);
   debugLogic(" Brightness lvl: "); debugLogicln(state.currentBrightnessNumber);
+  IR_command = 0; //reset ir command variable
 }
