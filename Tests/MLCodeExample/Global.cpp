@@ -2,14 +2,19 @@
 
 unsigned long currentMillis;
 
-// PIN CONFIGURATIONS
-const uint8_t LDR_PIN = 26;
-const uint8_t SWITCH_PIN = 15;
-const uint8_t LAMP_PIN = 20;
-const uint8_t BUTTON_PLUS = 13;
-const uint8_t BUTTON_MINUS = 14;
-const uint8_t TRIG_PIN = 17;
-const uint8_t ECHO_PIN = 16;
+// PIN CONFIG
+const uint8_t LDR_PIN = 4;
+const uint8_t LAMP_PIN = 27;
+const uint8_t IR_PIN = 23;
+const uint8_t PIR_MOTION_PIN = 19;
+const uint8_t LED_BUILTIN = 2;
+
+// VALID IR REMOTE COMMANDS
+const uint8_t IR_ON = 69;
+const uint8_t IR_OFF = 71;
+const uint8_t IR_BRIGHTEN = 90;
+const uint8_t IR_DIM = 8;
+const uint8_t IR_INVALID = -1;
 
 SystemState state;
 Timeing timeing;
