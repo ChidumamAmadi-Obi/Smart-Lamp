@@ -5,12 +5,16 @@
 
 // Pin Configuration (extern declarations)
 extern const uint8_t LDR_PIN;
-extern const uint8_t SWITCH_PIN;
 extern const uint8_t LAMP_PIN;
-extern const uint8_t BUTTON_PLUS;
-extern const uint8_t BUTTON_MINUS;
-extern const uint8_t TRIG_PIN;
-extern const uint8_t ECHO_PIN;
+extern const uint8_t IR_PIN;
+extern const uint8_t PIR_MOTION_PIN;
+extern const uint8_t LED_BUILTIN;
+
+extern const uint8_t IR_ON;
+extern const uint8_t IR_OFF;
+extern const uint8_t IR_BRIGHTEN;
+extern const uint8_t IR_DIM;
+extern const uint8_t IR_INVALID;
 
 // Lamp State Structure
 struct SystemState {
