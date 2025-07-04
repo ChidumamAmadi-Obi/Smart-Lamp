@@ -24,8 +24,6 @@ extern const uint8_t PIR_MOTION_PIN;
 bool motionSensorStatus = false;
 
 int Lux_Value() { // calculates Lux value
-  currentMillis = millis();
-
   int   ldrRawData;
   float resistorVoltage, ldrVoltage;
   float ldrResistance;
