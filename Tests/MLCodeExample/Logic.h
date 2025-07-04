@@ -14,6 +14,11 @@
 
 extern const uint8_t  LAMP_PIN;
 
+extern const uint8_t IR_ON;
+extern const uint8_t IR_OFF;
+extern const uint8_t IR_BRIGHTEN;
+extern const uint8_t IR_DIM;
+extern const uint8_t IR_INVALID;
 
 const int brightnessIndex[6] = {0, 51, 102, 153, 204, 255};
 static uint8_t IR_command = 0;
