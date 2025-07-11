@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "IRremote.hpp"
 #include "Calibration.h"
 #include "Logic.h"
 #include "Global.h"
@@ -22,25 +23,20 @@ void setup() {
 
   pinMode(LAMP_PIN, OUTPUT);
 
-  pinMode(BUTTON_PLUS, INPUT);
-  pinMode(BUTTON_MINUS, INPUT);
-  pinMode(SWITCH_PIN, INPUT);
-
-  pinMode(TRIG_PIN, OUTPUT);
-  pinMode(ECHO_PIN, INPUT);
+  pinMode(PIR_MOTION_PIN,INPUT);
   pinMode(LDR_PIN, INPUT);
 
   pinMode(LED_BUILTIN,OUTPUT);
-
-  analogReadResolution(12); 
-
+  
+  IrReceiver.begin(IR_PIN, ENABLE_LED_FEEDBACK);
+  
   analogWrite(LAMP_PIN, LOW);
 }
 
 void loop() {
   currentMillis = millis();
 
-  motion = motionSensorHR_S04();
+  motion = PIRmotionSensor();
   lux = Lux_Value();
   lampStateMachine(); // handles lamp control
   blinkLED();
