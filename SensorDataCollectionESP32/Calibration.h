@@ -36,6 +36,8 @@ int Lux_Value() { // calculates Lux value
   ldrResistance = ldrVoltage/resistorVoltage * REF_RESISTANCE;
   ldrLux = LUX_CALC_SCALAR * pow(ldrResistance, LUX_CALC_EXPONENT);
 
+  if (ldrLux > 100000) ldrLux = 99999;
+
   //debugCal("LDR Raw Data   : "); debugCalln(ldrRawData);
   //debugCal("LDR Voltage    : "); debugCal(ldrVoltage); debugCalln(" volts");
   //debugCal("LDR Resistance : "); debugCal(ldrResistance); debugCalln(" Ohms");
