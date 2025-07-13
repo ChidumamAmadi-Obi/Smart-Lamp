@@ -3,11 +3,10 @@
 
 import serial
 import csv
-from datetime import datetime
 import os
 
 CSV_FILE = "sensor_log.csv"
-HEADER = ["Timestamp", "Lamp Status", "Lamp Brightness", "Movement","Light (Lux)"]
+HEADER = ["Timestamp", "Lamp Brightness", "Movement","Light (Lux)"]
 
 ser = serial.Serial('COM10', 115200, timeout=1)
 
@@ -28,10 +27,9 @@ with open(CSV_FILE, "a", newline='') as f:
         while True:
             line = ser.readline().decode().strip()  # Read data from Pico
             if line:
-                timestamp = datetime.now().strftime("%d/%H/%M")
-                sensor_data = line.split(",")  # Split CSV from Pico
-                writer.writerow([timestamp] + sensor_data)  # Write row
+                data = line.split(",")  # Split CSV from Pico
+                writer.writerow(data)  # Write row
                 f.flush()  # Force-save to disk
-                print(f"Logged: {timestamp} | Data: {sensor_data}")
+                print(f"Logged: {data}")
     except KeyboardInterrupt:
         print("Logging stopped.")
