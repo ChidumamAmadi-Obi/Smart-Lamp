@@ -12,7 +12,7 @@ data = pd.read_csv("sensor_log.csv")
 # Converting into percentage
 data['Lamp Brightness'] = data['Lamp Brightness'] * 20 
 
-X = data[["Timestamp","Lamp Brightness", "Movement", "Light (Lux)"]]  # Input features
+X = data[["Timestamp", "Movement", "Light (Lux)"]]  # Input features
 y_brightness = (data['Lamp Brightness']) * 20 # Target: Brightness (0-100)
 
 # Train models
