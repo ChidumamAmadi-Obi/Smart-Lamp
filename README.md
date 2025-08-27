@@ -1,54 +1,39 @@
 # Smart-Lamp
 
-An ESP32 based smart lamp that learns user behavior to predictively control lighting using motion, ambient light, and time of day.
+ESP32-powered smart lamp combining multiple sensors and controls for energy efficiency and convenience.
 
 ## ✨ Features
 
   * Real-time data collection (motion, ambient light, manual toggles)
-  * Time-based patterns (learns when you usually turn on the lamp)
-  * Predictive automation (turns on lights before you enter the room)
-  * Adaptive brightness (adjusts based on ambient light and habits)
+  * IR Remote Control (power ON/OFF, Brightness and dimming controls)
+  * Automatic Control (Adjusts behaviour based on ambient light, time f day and room occupancy)
+  * Deep Sleep Mode (Completly shuts down control logic and greatly reduces power consumption)
 
-## 🛠 Setup
+### Hardware:
 
-  ### 1) Hardware:
-
-  * ESP32
-  * PIR SENSOR 
-  * LDR
+  * ESP32 Dev Board
+  * PIR Motion Sensor
+  * LDR Sensor
   * IR Receiver and Remote (38KHz)
+  * LED Lamp or light module
 
-  ### 2) Data Collection
+### How It Works
+  1) Manual control through IR remote (on/off, brightness).
+  2) Automatic control kicks in if no manual override:
+    * Lamp stays off if room is bright enough.
+    * Lamp turns on when dark and motion is detected.
+    * Time-based logic adjusts brightness levels throughout the day.
+  3) Deep Sleep Mode allows ultra-low power operation when user wants the lamp inactive.
+  4) In the future, the lamp will learn patterns (wake times, sleep times, occupancy) and adapt lighting automatically.
 
-  Sensor data is gathered by the ESP32 and sent to a PC over USB Serial (UART)
-  
-    Serial.print(lampStatus);
-    Serial.print(",");
-    Serial.print(lampBrightness);
-    Serial.print(",");
-    Serial.print(motion);
-    Serial.print(",");
-    Serial.println(ambientLight);
-    
-    // output: lampStatus,lampBrightness,motion,ambientLight
+### Roadmap
+- [x] IR Remote Control
+- [x] PIR + LDR + Time-based auto control
+- [ ] Deep Sleep mode
+- [ ] ML-powered habit learning
 
-  Using a python script the data is logged automaticaly into a csv file
-
-  ### 3) ML Training
-
-    model.fit(X_train, y_train)  # Predicts "turn on lamp?" (0/1)
-
-  ### 4) Depployment
-
-  flash trained model onto the ESP32 for real time decisions
-
-  🌟 Future Goals
-
+### Future Goals
+  * Implement machine learning to improve accuracy over time
   * Integrate WiFi for remote monitoring
   * Add MQTT for cloud logging
   * Energy-saving mode (dim during low-usage hours)
-
-  ### Why It’s Cool
-
-* No more fumbling for switches — the lamp anticipates your needs.
-* Self-learning — improves accuracy over time.
