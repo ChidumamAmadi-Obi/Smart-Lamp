@@ -1,5 +1,3 @@
-// DUMB LAMP
-
 #include <stdio.h>
 #include <WiFi.h>
 
