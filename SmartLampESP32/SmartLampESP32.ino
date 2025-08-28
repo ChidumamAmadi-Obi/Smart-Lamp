@@ -59,7 +59,6 @@ void loop() {
   processData( currentMillis );
 
   lampStateMachine(); // handles lamp control
-  blinkLED();
 }
 
 //_______________________________________________________________________________________
@@ -115,22 +114,4 @@ void connectToWiFi(){
   //disconnect WiFi as it's no longer needed
   WiFi.disconnect(true);
   WiFi.mode(WIFI_OFF);
-}
-
-void blinkLED() { // uses millis() to blink the LED                     
-  currentMillis = millis(); 
-  
-  if (LEDBState == HIGH) {
-    if (currentMillis - timeing.prevLEDFlash >= 250) { 
-      timeing.prevLEDFlash = currentMillis;         
-      LEDState = LOW;
-      digitalWrite(LED_BUILTIN, LEDState);
-    }
-  } else {                                          
-    if (currentMillis - timeing.prevLEDFlash >= 1000) {
-      timeing.prevLEDFlash = currentMillis;
-      LEDState = HIGH;
-      digitalWrite(LED_BUILTIN, LEDState);
-    }
-  }
 }
