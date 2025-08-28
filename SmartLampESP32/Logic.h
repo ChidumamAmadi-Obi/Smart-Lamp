@@ -19,16 +19,25 @@ extern const uint8_t IR_ON;
 extern const uint8_t IR_OFF;
 extern const uint8_t IR_BRIGHTEN;
 extern const uint8_t IR_DIM;
+extern const uint8_t IR_AUTO;
 extern const uint8_t IR_INVALID;
 
 const int brightnessIndex[6] = {0, 51, 102, 153, 204, 255};
 static uint8_t IR_command = 0;
 static bool manualOverride = false;
+static bool autoToggle = true;
 
 void manualOverrideTimeout() {
   currentMillis = millis();
   if (currentMillis - timeing.prevManualToggle >= MANUAL_OVERRIDE_TIMEOUT){
     manualOverride = false;
+  }
+}
+
+void autoToggle_() {
+  if (IR_command == IR_AUTO) {
+    autoToggle = !autoToggle;
+    debugLogicln("AUTO TOGGLE ACVITATED");
   }
 }
 
@@ -86,7 +95,7 @@ int brightnessSelect() {
     manualOverrideTimeout();
 
     // AUTO toggle
-    if ((manualOverride == false) && (state.currentBrightnessNumber != predicted.brightness) && (state.currentLampStatus == true)) {
+    if ( (autoToggle) && (manualOverride == false) && (state.currentBrightnessNumber != predicted.brightness) && (state.currentLampStatus == true)) {
       state.currentBrightnessNumber = predicted.brightness; //changes current brightness to predicted no.
       debugLogicln(" AUTO: Brightness adjusted ");
     }
@@ -100,6 +109,8 @@ void lampStateMachine() {
     IrReceiver.resume();
   }
 
+  autoToggle_();
+
   if ( state.currentLampStatus == false ) { //lamp is off and brightness is 0
     state.currentBrightnessNumber = 0;
     analogWrite(LAMP_PIN,0);
@@ -111,7 +122,7 @@ void lampStateMachine() {
       debugLogicln(" MANUAL: Turning Lamp on... ");
     }
     manualOverrideTimeout();
-    if ((manualOverride == false) && (predicted.lampStatus == true) ){ // auto
+    if ( (autoToggle) && (manualOverride == false) && (predicted.lampStatus == true) ){ // auto
         lampToggle(state.currentLampStatus);
         debugLogicln(" AUTO: Turning Lamp on... ");
       }
@@ -140,7 +151,7 @@ void lampStateMachine() {
     debugLogicln(" MANUAL: Turning Lamp off... ");
   }
   manualOverrideTimeout();
-  if ( (manualOverride == false) && (predicted.lampStatus == false) ){
+  if ( (autoToggle) && (manualOverride == false) && (predicted.lampStatus == false) ){
     lampToggle(state.currentLampStatus);
     debugLogicln(" AUTO: Turning Lamp off... ");
     }
@@ -151,4 +162,5 @@ void lampStateMachine() {
   // debugLogicln(manualOverride);
   // debugLogicln(IR_command);
   IR_command = 0; //reset ir command 
+
 }
