@@ -14,10 +14,12 @@ const uint8_t IR_ON = 69;
 const uint8_t IR_OFF = 71;
 const uint8_t IR_BRIGHTEN = 90;
 const uint8_t IR_DIM = 8;
+const uint8_t IR_AUTO = 68;
 const uint8_t IR_INVALID = -1;
 
 
 SystemState state;
 Timeing timeing;
 Predict predicted;
+
 Model model;
