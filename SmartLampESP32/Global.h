@@ -14,6 +14,7 @@ extern const uint8_t IR_ON;
 extern const uint8_t IR_OFF;
 extern const uint8_t IR_BRIGHTEN;
 extern const uint8_t IR_DIM;
+extern const uint8_t IR_AUTO;
 extern const uint8_t IR_INVALID;
 
 // Lamp State Structure
@@ -46,5 +47,6 @@ extern unsigned long currentMillis;
 extern SystemState state;
 extern Timeing timeing;
 extern Predict predicted;
+
 
 #endif
