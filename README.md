@@ -1,13 +1,13 @@
 # Smart-Lamp
 
-ESP32-powered smart lamp combining multiple sensors and controls for energy efficiency and convenience.
+Energy-efficient ESP32-powered smart lamp that combines sensor data, machine learning, and user behaviour patterns to create the perfect lighting experience.
 
-## ✨ Features
-
-  * Real-time data collection (motion, ambient light, manual toggles)
-  * IR Remote Control (power ON/OFF, Brightness and dimming controls)
-  * Automatic Control (Adjusts behaviour based on ambient light, time f day and room occupancy)
-  * Deep Sleep Mode (Completly shuts down control logic and greatly reduces power consumption)
+## ✨ Core Functionality
+  * Predictive Behavior - Learns user patterns and anticipates lighting needs
+  * Time-based Logic - Adjusts brightness levels throughout the day
+  * Real-time Sensor Integration - Motion detection, ambient light sensing, and manual controls
+  * IR Remote Control - Complete control (power ON/OFF, brightness adjustment, dimming)
+  * Automatic Adaptive Lighting - Intelligent behaviour based on ambient conditions, time of day, and room occupancy
 
 ### Hardware:
 
@@ -29,11 +29,10 @@ ESP32-powered smart lamp combining multiple sensors and controls for energy effi
 ### Roadmap
 - [x] IR Remote Control
 - [x] PIR + LDR + Time-based auto control
+- [x] Basic pattern learning
+- [] MQTT for remote monitoring
 - [ ] Deep Sleep mode
-- [ ] ML-powered habit learning
 
 ### Future Goals
-  * Implement machine learning to improve accuracy over time
-  * Integrate WiFi for remote monitoring
   * Add MQTT for cloud logging
   * Energy-saving mode (dim during low-usage hours)
