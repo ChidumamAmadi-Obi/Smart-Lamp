@@ -30,7 +30,7 @@ Energy-efficient ESP32-powered smart lamp that combines sensor data, machine lea
 - [x] IR Remote Control
 - [x] PIR + LDR + Time-based auto control
 - [x] Basic pattern learning
-- [] MQTT for remote monitoring
+- [ ] MQTT for remote monitoring
 - [ ] Deep Sleep mode
 
 ### Future Goals
