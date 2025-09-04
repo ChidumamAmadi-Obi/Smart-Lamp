@@ -34,4 +34,9 @@ Energy-efficient ESP32-powered smart lamp that combines sensor data, machine lea
 - [ ] MQTT for remote monitoring
 
 ### Future Goals
+  * Decrease the amount of program storage space used (currently 73%)
+  * Increase robustness and error handling
   * Add MQTT for cloud logging and monitoring
+  * Design Custom PCB with aggressive anti-noise properties
+  * Design housing
+
