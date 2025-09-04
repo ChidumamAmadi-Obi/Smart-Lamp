@@ -4,13 +4,13 @@ Energy-efficient ESP32-powered smart lamp that combines sensor data, machine lea
 
 ## ✨ Core Functionality
   * Predictive Behavior - Learns user patterns and anticipates lighting needs
+  * Deep Sleep - Ultra low power mode when idle
   * Time-based Logic - Adjusts brightness levels throughout the day
   * Real-time Sensor Integration - Motion detection, ambient light sensing, and manual controls
   * IR Remote Control - Complete control (power ON/OFF, brightness adjustment, dimming)
   * Automatic Adaptive Lighting - Intelligent behaviour based on ambient conditions, time of day, and room occupancy
 
 ### Hardware:
-
   * ESP32 Dev Board
   * PIR Motion Sensor
   * LDR Sensor
@@ -24,15 +24,14 @@ Energy-efficient ESP32-powered smart lamp that combines sensor data, machine lea
     * Lamp turns on when dark and motion is detected.
     * Time-based logic adjusts brightness levels throughout the day.
   3) Deep Sleep Mode allows ultra-low power operation when user wants the lamp inactive.
-  4) In the future, the lamp will learn patterns (wake times, sleep times, occupancy) and adapt lighting automatically.
+  4) The lamp will learns usage patterns and adapts lighting automatically overtime.
 
 ### Roadmap
 - [x] IR Remote Control
 - [x] PIR + LDR + Time-based auto control
 - [x] Basic pattern learning
+- [x] Deep Sleep mode
 - [ ] MQTT for remote monitoring
-- [ ] Deep Sleep mode
 
 ### Future Goals
-  * Add MQTT for cloud logging
-  * Energy-saving mode (dim during low-usage hours)
+  * Add MQTT for cloud logging and monitoring
