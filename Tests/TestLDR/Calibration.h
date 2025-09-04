@@ -2,7 +2,7 @@
 
 #define LDR_PIN                   4   // LDR connected to analoug input pin
 #define MAX_ADC_READING           4095 
-#define ADC_REF_VOLTAGE           5.05 // Voltage supply to the voltage divider.. (Measure it)
+#define ADC_REF_VOLTAGE           3.33f // Voltage supply to the voltage divider.. (Measure it)
 #define REF_RESISTANCE            10000 
 #define LUX_CALC_SCALAR           2355175
 #define LUX_CALC_EXPONENT         -1.2109   
@@ -26,6 +26,7 @@ int Lux_Value() {
  
   return(ldrLux);
 }
+
 
 
 
