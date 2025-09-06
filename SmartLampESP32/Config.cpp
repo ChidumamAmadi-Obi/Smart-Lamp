@@ -8,8 +8,8 @@ uint8_t prevDayNumber;
 bool manualOverrideTimer = false;
 bool autoToggle = false;
 
-const char* ssid = "Google-Mesh";
-const char* password   = "Chichi12";
+const char* ssid = "XXX";
+const char* password   = "XXX";
 const char* ntpServer = "pool.ntp.org";
 const char* backupNtpServer = "time.nist.gov"; 
 
@@ -31,4 +31,5 @@ void initializePins() {
 
 SystemState state;
 Timeing timeing;
+
 Predict predicted;
