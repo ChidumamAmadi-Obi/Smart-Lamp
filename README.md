@@ -18,13 +18,13 @@ Energy-efficient ESP32-powered smart lamp that combines sensor data, machine lea
   * LED Lamp or light module
 
 ### How It Works
-  1) Manual control through IR remote (on/off, brightness).
-  2) Automatic control kicks in if no manual override:
+ 1) Manual control through IR remote (on/off, brightness).
+ 2) Automatic control kicks in if no manual override:
     * Lamp stays off if room is bright enough.
     * Lamp turns on when dark and motion is detected.
     * Time-based logic adjusts brightness levels throughout the day.
-  3) Deep Sleep Mode allows ultra-low power operation when user wants the lamp inactive.
-  4) The lamp will learns usage patterns and adapts lighting automatically overtime.
+ 3) Deep Sleep Mode allows ultra-low power operation when user wants the lamp inactive.
+ 4) The lamp will learns usage patterns and adapts lighting automatically overtime.
 
 ### Roadmap
 - [x] IR Remote Control
