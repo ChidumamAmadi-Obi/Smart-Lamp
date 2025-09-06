@@ -1,7 +1,6 @@
 #include "Config.h"
 
-#define DEBUG_LOGIC false
-#if DEBUG_LOGIC == 1 
+#if DEBUG_LOGIC
 #define debugLogic(x) Serial.print(x)
 #define debugLogicln(x) Serial.println(x)
 #else 
@@ -18,18 +17,13 @@ void manualOverrideTimeout() {
   }
 }
 
-void autoToggle_() {
+void handleAutoToggle() {
   if (IR_command == Config::IR_AUTO) {
     autoToggle = !autoToggle;
     delay(100);
-    if (autoToggle) {
-      digitalWrite(Config::AUTO_LED_PIN,HIGH);
-      debugLogicln("AUTO TOGGLE ACVITATED");
-    } else {
-      digitalWrite(Config::AUTO_LED_PIN,LOW);
-      debugLogicln("AUTO TOGGLE DE-ACVITATED");
-
-    }
+    digitalWrite(Config::AUTO_LED_PIN, autoToggle ? 255 : 0);
+    debugLogic("AUTO TOGGLE ");
+    debugLogicln(autoToggle ? "ACTIVATED" : "DE-ACTIVATED");
   }
 }
 
@@ -55,7 +49,7 @@ void lampFade(bool fading_status, int starting_brightness, int final_brightness)
 }
 
 void lampToggle(bool stateMachine){
-  if (stateMachine == false) { // going from off to on
+  if (!stateMachine) { // going from off to on
     state.currentLampStatus = true;
     state.currentBrightnessNumber = 3;
     lampFade(true,0,Config::brightnessIndex[state.currentBrightnessNumber]);
@@ -72,14 +66,14 @@ int brightnessSelect() {
       manualOverrideTimer = true;
       timeing.prevManualToggle = currentMillis;
       state.currentBrightnessNumber = min(state.currentBrightnessNumber + 1, 5);
-      debugLogic(" MANUAL: Brightness increased ");
+      debugLogicln(" MANUAL: Brightness increased ");
       delay(50);
     }
     else if (IR_command == Config::IR_DIM) {
       manualOverrideTimer = true;
       timeing.prevManualToggle = currentMillis;
       state.currentBrightnessNumber = max(state.currentBrightnessNumber - 1, 1);
-      debugLogic(" MANUAL: Brightness decreased ");
+      debugLogicln(" MANUAL: Brightness decreased ");
       delay(50);
     }
     manualOverrideTimeout();
@@ -98,9 +92,9 @@ void lampStateMachine() {
     IrReceiver.resume();
   } 
 
-  autoToggle_();
+  handleAutoToggle();
 
-  if ( state.currentLampStatus == false ) {
+  if ( !state.currentLampStatus ) {
     state.currentBrightnessNumber = 0;
     analogWrite(Config::LAMP_PIN,0);
 
@@ -119,7 +113,7 @@ void lampStateMachine() {
     state.lastBrightnessNumber = state.currentBrightnessNumber;
   }
   
-  if ( state.currentLampStatus == true ) { // handle partial lamp fade
+  if ( state.currentLampStatus ) { // handle partial lamp fade
     state.currentBrightnessNumber = brightnessSelect();
 
     if ( state.currentBrightnessNumber != state.lastBrightnessNumber) { // handles partial lamp fade in/out
