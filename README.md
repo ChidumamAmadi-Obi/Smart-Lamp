@@ -2,8 +2,6 @@
 
 Energy-efficient ESP32-powered smart lamp that combines sensor data, machine learning, and user behaviour patterns to create the perfect lighting experience.
 
-### Demo
-
 ### ✨ Core Functionality
   * Predictive Behavior - Learns user patterns and anticipates lighting needs
   * Deep Sleep - Ultra low power mode when idle
