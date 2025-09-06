@@ -1,5 +1,3 @@
-// https://www.allaboutcircuits.com/projects/design-a-luxmeter-using-a-light-dependent-resistor/ 
-
 #define LDR_PIN                   4   // LDR connected to analoug input pin
 #define MAX_ADC_READING           4095 
 #define ADC_REF_VOLTAGE           3.33f // Voltage supply to the voltage divider.. (Measure it)
@@ -21,7 +19,7 @@ float exponentialMovingAverage(float newVal) {
   emaLux = (LUX_EMA_ALPHA * newVal) + ((1 - LUX_EMA_ALPHA) * emaLux);
   return emaLux;
 }
-float Lux_Value() {
+float Lux_Value() { // returns inf in bright light?
   uint16_t   ldrRawData;
   float resistorVoltage, ldrVoltage;
   float ldrResistance;
@@ -32,7 +30,7 @@ float Lux_Value() {
   resistorVoltage = (float)ldrRawData / MAX_ADC_READING * ADC_REF_VOLTAGE;
   ldrVoltage = ADC_REF_VOLTAGE - resistorVoltage;
   ldrResistance = ldrVoltage/resistorVoltage * REF_RESISTANCE;
-  rawLdrLux = LUX_CALC_SCALAR * pow(ldrResistance, LUX_CALC_EXPONENT);   // This is the formula that calculates Lux... See lab notes that I havent written yet(20/2/2020)!!!!!
+  rawLdrLux = LUX_CALC_SCALAR * pow(ldrResistance, LUX_CALC_EXPONENT);  
 
   if (rawLdrLux > MAX_LDR_READING) rawLdrLux = MAX_LDR_READING;
 
@@ -46,6 +44,7 @@ float Lux_Value() {
   
   return(filteredLdrLux);
 }
+
 
 
 
