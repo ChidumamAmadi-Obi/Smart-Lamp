@@ -4,6 +4,7 @@ Energy-efficient ESP32-powered smart lamp that combines sensor data, machine lea
 
 ### Demo
 Remote control Demontration
+
 https://github.com/user-attachments/assets/f81e4caa-da95-4633-842e-62d66da5330c
 
 ### ✨ Core Functionality
