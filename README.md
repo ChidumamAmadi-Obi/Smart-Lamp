@@ -33,14 +33,14 @@ https://github.com/user-attachments/assets/f81e4caa-da95-4633-842e-62d66da5330c
  4) The lamp will learns usage patterns and adapts lighting automatically overtime.
 
 ### Setup Instructions 
-**1** Open ArduinoIDE and ensure ESP32 board support is installed (esp32 by Espressif Systems)
+**1** Open ArduinoIDE and ensure ESP32 board support is installed. (esp32 by Espressif Systems)
 
-**2** Start a new sketch, download and include the "IRremote by shirriff, z3t0, ArminJo" library
+**2** Start a new sketch, download and include the "IRremote by shirriff, z3t0, ArminJo" library.
 ```
 #include "IRremote.hpp"
 ```
 #### Configuring IR remote Commands
-To determine the IR protocol and key codes used by your unique remote, follow this guide ![here](https://www.makerguides.com/ir-receiver-remote-arduino-tutorial/)
+To determine the IR protocol and key codes used by your unique remote, follow this guide ![here](https://www.makerguides.com/ir-receiver-remote-arduino-tutorial/).
 
 **3.1** Wire the output pin of the IR receiver to pin 2 of your ESP32 and flash the code below:
 ```
@@ -80,13 +80,13 @@ cd Smart-Lamp/SmartLampESP32
   constexpr uint8_t IR_SLEEP = 67;
   constexpr uint8_t IR_INVALID = 255;
 ```
-**3.5** Save this file,your lamp will now respond to your custom remote buttons
+**3.5** Save this file,your lamp will now respond to your custom remote buttons.
 
 *NOTE: IR:INVALID is a placeholder for "no valid command", leave this as 255 unless you need a special case.
 If your remote sends different bit lengths or protocols, make sure you’re using the correct mode in the IRremote library.*
 
-**4** Open the SmartLampESP32.ino file with Arduino IDE
-**5** Connect sensors and components as shown in the wiring diagram
+**4** Open the SmartLampESP32.ino file with Arduino IDE.
+**5** Connect sensors and components as shown in the wiring diagram.
 
 <img width="962" height="727" alt="image" src="https://github.com/user-attachments/assets/4af03bc6-307f-4f97-8daa-f75f5d2b024e" />
 
