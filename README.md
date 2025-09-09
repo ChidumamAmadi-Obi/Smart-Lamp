@@ -84,9 +84,13 @@ cd Smart-Lamp/SmartLampESP32
 
 *NOTE: IR:INVALID is a placeholder for "no valid command", leave this as 255 unless you need a special case.
 If your remote sends different bit lengths or protocols, make sure you’re using the correct mode in the IRremote library.*
-
-**4** Open the SmartLampESP32.ino file with Arduino IDE.
-**5** Connect sensors and components as shown in the wiring diagram.
+**4** Open *Config.cpp* and update the wifi credentials to fit your home WiFi:
+```
+const char* ssid = "YOUR_SSID";
+const char* password   = "YOUR_PASSWORD";
+```
+**5** Open the SmartLampESP32.ino file with Arduino IDE.
+**6** Connect sensors and components as shown in the wiring diagram.
 
 <img width="962" height="727" alt="image" src="https://github.com/user-attachments/assets/4af03bc6-307f-4f97-8daa-f75f5d2b024e" />
 
