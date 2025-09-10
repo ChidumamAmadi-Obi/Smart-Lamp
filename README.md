@@ -92,7 +92,7 @@ const char* password   = "YOUR_PASSWORD";
 **5** Open the SmartLampESP32.ino file with Arduino IDE.
 **6** Connect sensors and components as shown in the wiring diagram.
 
-<img width="962" height="727" alt="image" src="https://github.com/user-attachments/assets/4af03bc6-307f-4f97-8daa-f75f5d2b024e" />
+<img width="971" height="728" alt="image" src="https://github.com/user-attachments/assets/018cb398-74d9-4d2a-8f06-2845002019ad" />
 
 **6** Flash the code to your ESP32.
 **7** Power the circuit and observe lamp control via sensors and manual override.
