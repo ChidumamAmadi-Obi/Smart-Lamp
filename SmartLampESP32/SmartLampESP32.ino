@@ -19,26 +19,23 @@ void setup() {
   handleWakeUp();
   Config::initializePins;
 
-  rtc_gpio_isolate(Config::WAKEUP_PIN);
-  delay(10);
+  pinMode(Config::AUTO_LED_PIN,OUTPUT);
+  pinMode(Config::WIFI_LED_PIN,OUTPUT);
+  pinMode(Config::ERROR_LED_PIN,OUTPUT);
 
   IrReceiver.begin(Config::IR_PIN, ENABLE_LED_FEEDBACK);
-  connectToWiFi();
-}
+  handleWiFi();
 
+  initPredictionSystem();
+}
 void loop() {
   currentMillis = millis();
   getSensorReadings(motion,lux);
-
   getHourOfDay();   
-  smartPredict(motion,lux);  
-  lampStateMachine();
-  
-  static unsigned long lastSleepCheck = 0;
-  if ( (currentMillis - lastSleepCheck > 5000) && (!motion)) {
-    handleSleep();
-    lastSleepCheck = currentMillis;
-  } 
+
+  if (autoToggle)      smartPredict(motion);
+  decodeIrReceiver();  lampStateMachine();
+  decodeIrReceiver();  handleSleep(motion);
 }
 
 void getSensorReadings(bool &motion, float &lux) {
@@ -46,6 +43,9 @@ void getSensorReadings(bool &motion, float &lux) {
   lux = Lux_Value();
 }
 
-// if the room has been left unoccupied for an extended period of time (5 mins), enter light sleep
-// if room has been left unoccupied for a longer period (10 mins), enter deep sleep
-  // deep sleep can be triggered by button as well
+inline void decodeIrReceiver(){
+  if (IrReceiver.decode()) {
+    IR_command = IrReceiver.decodedIRData.command;
+    IrReceiver.resume();
+  } 
+}

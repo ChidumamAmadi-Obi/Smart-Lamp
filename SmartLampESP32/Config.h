@@ -1,7 +1,10 @@
 #pragma once
+#ifndef CONFIG
+#define CONFIG
+
 #include <Arduino.h>
 
-#define DEBUG_MODE 2    // 0 = no debuging
+#define DEBUG_MODE 2   // 0 = no debuging
                         // 1 = basic debugging
                         // 2 = Logic debugging 
                         // 3 = calibration debugging
@@ -38,20 +41,16 @@
 #define uS_TO_S_FACTOR 1000000  // Conversion factor for microseconds to seconds
 
 namespace Config {
-  // Debug settings
-  // constexpr bool DEBUG_WIFI = true;
-  // constexpr bool DEBUG_CALIBRATION = false;
-  // constexpr bool DEBUG_PREDICTION = true;
-  // constexpr bool DEBUG_LOGIC = false;
-  // constexpr bool LOG_DATA = false;
-  
+    
   // Pin Configuration
   constexpr uint8_t LDR_PIN = 4;
   constexpr uint8_t LAMP_PIN = 27;
   constexpr uint8_t IR_PIN = 23;
   constexpr uint8_t PIR_MOTION_PIN = 19;
   constexpr uint8_t LED_BUILTIN = 2;
-  constexpr uint8_t AUTO_LED_PIN = 13;
+  constexpr uint8_t AUTO_LED_PIN = 26;
+  constexpr uint8_t WIFI_LED_PIN = 25;
+  constexpr uint8_t ERROR_LED_PIN = 33;
 
   constexpr gpio_num_t WAKEUP_PIN = GPIO_NUM_35;
 
@@ -61,12 +60,16 @@ namespace Config {
   constexpr uint8_t IR_BRIGHTEN = 90;
   constexpr uint8_t IR_DIM = 8;
   constexpr uint8_t IR_AUTO = 68;
+  constexpr uint8_t IR_SLEEP = 67;
   constexpr uint8_t IR_INVALID = 255;
   
   // Timing Variables
   constexpr unsigned long FADING_RATE = 5;
-  constexpr unsigned long MANUAL_OVERRIDE_TIMEOUT = 3000; //3 seconds for testing
+  constexpr unsigned long MANUAL_OVERRIDE_TIMEOUT = 10000; //10 seconds for testing
   constexpr unsigned long MOTION_SCAN_INTERVAL = 100;
+
+  constexpr long GMTOFFSET_SEC = 0;
+  constexpr uint16_t DAYLIGHTOFFSET_SEC = 3600;
   
   // LDR Calibration
   constexpr uint16_t MAX_ADC_READING = 4095;
@@ -81,20 +84,22 @@ namespace Config {
   constexpr uint8_t NUM_SLOTS = 96; 
   constexpr float DECAY_FACTOR = 0.99f; 
   constexpr uint8_t ACTIVITY_THRESHOLD = 2;
-  constexpr uint8_t LUX_THRESHOLD = 50; 
+  constexpr uint8_t LUX_MAX_THRESHOLD = 50; 
+  constexpr uint8_t LUX_MIN_THRESHOLD = 40; 
 
   constexpr uint8_t MAX_LUX = 45.0f;
   constexpr uint8_t MIN_LUX = 5.0f;
 
   // Sleep Parameters
-  constexpr uint16_t TIME_UNTIL_SLEEP = 3000; // 3secs
-
+  constexpr uint8_t LIGHT_SLEEP_TIMER = 3; // 3 seconds for testing
   
   // Brightness Levels
   constexpr uint8_t brightnessIndex[6] = {0, 51, 102, 153, 204, 255}; //pwm values
   
   void initializePins();
 }
+
+void decodeIrReceiver();
 
 // LAMP STATE
 struct SystemState {
@@ -125,9 +130,9 @@ struct Predict {
 extern unsigned long currentMillis;
 extern unsigned long sleepEntryTime;
 extern float hourOfDay;
-extern uint8_t prevDayNumber;
 extern bool manualOverrideTimer;
 extern bool autoToggle;
+extern uint8_t IR_command;
 
 extern const char* ssid;
 extern const char* password;
@@ -136,9 +141,11 @@ extern const char* backupNtpServer;
 
 // variables will survive after deep sleep
 extern RTC_DATA_ATTR int bootCount;
-extern RTC_DATA_ATTR uint8_t dayNumber;
 
 // GLOBAL STRUCT INSTANCES
 extern SystemState state;
 extern Timeing timeing;
 extern Predict predicted;
+extern struct tm timeinfo;
+
+#endif

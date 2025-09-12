@@ -1,3 +1,6 @@
+#ifndef CALIBRATION
+#define CALIBRATION
+
 #include "Config.h"
 
 #if DEBUG_CALIBRATION
@@ -7,8 +10,6 @@
 #define debugCal(x)
 #define debugCalln(x)
 #endif
-
-// https://www.allaboutcircuits.com/projects/design-a-luxmeter-using-a-light-dependent-resistor/ 
 
 static float emaLux = 0;
 static bool emaInitialized = false;
@@ -61,6 +62,7 @@ bool PIRmotionSensor(){ // senses motion with a PIR sensor
   return motionSensorStatus;
 }
  
+#endif
 
 
 

@@ -1,3 +1,6 @@
+#ifndef LOGIC
+#define LOGIC
+
 #include "Config.h"
 
 #if DEBUG_LOGIC
@@ -7,8 +10,6 @@
 #define debugLogic(x)
 #define debugLogicln(x)
 #endif 
-
-static uint8_t IR_command = 0;
 
 void manualOverrideTimeout() {
   currentMillis = millis();
@@ -21,7 +22,7 @@ void handleAutoToggle() {
   if (IR_command == Config::IR_AUTO) {
     autoToggle = !autoToggle;
     delay(100);
-    digitalWrite(Config::AUTO_LED_PIN, autoToggle ? 255 : 0);
+    digitalWrite(Config::AUTO_LED_PIN, autoToggle ? 1 : 0);
     debugLogic("AUTO TOGGLE ");
     debugLogicln(autoToggle ? "ACTIVATED" : "DE-ACTIVATED");
   }
@@ -59,8 +60,7 @@ void lampToggle(bool stateMachine){
   }
 }
 
-int brightnessSelect() { 
-
+uint8_t brightnessSelect() { 
     // MANUAL TOGGLE
     if (IR_command == Config::IR_BRIGHTEN) {
       manualOverrideTimer = true;
@@ -73,7 +73,7 @@ int brightnessSelect() {
       manualOverrideTimer = true;
       timeing.prevManualToggle = currentMillis;
       state.currentBrightnessNumber = max(state.currentBrightnessNumber - 1, 1);
-      debugLogicln(" MANUAL: Brightness decreased ");
+      debugLogicln(" MANUAL: Brightness decreased to "); debugLogic(state.currentBrightnessNumber); debugLogicln("/5");
       delay(50);
     }
     manualOverrideTimeout();
@@ -81,17 +81,12 @@ int brightnessSelect() {
     // AUTO toggle
     if ( (autoToggle) && (manualOverrideTimer == false) && (state.currentBrightnessNumber != predicted.brightness) && (state.currentLampStatus == true)) {
       state.currentBrightnessNumber = predicted.brightness; //changes current brightness to predicted no.
-      debugLogicln(" AUTO: Brightness adjusted ");
+      debugLogic(" AUTO: Brightness adjusted to "); debugLogic(state.currentBrightnessNumber); debugLogicln("/5");
     }
   return state.currentBrightnessNumber;
 } 
 
 void lampStateMachine() {
-  if (IrReceiver.decode()) { // collects command from ir remote
-    IR_command = IrReceiver.decodedIRData.command;
-    IrReceiver.resume();
-  } 
-
   handleAutoToggle();
 
   if ( !state.currentLampStatus ) {
@@ -144,3 +139,5 @@ void lampStateMachine() {
   // debugLogic(" Brightness lvl: "); debugLogicln(state.currentBrightnessNumber);
   IR_command = 0; //reset ir command 
 }
+
+#endif
