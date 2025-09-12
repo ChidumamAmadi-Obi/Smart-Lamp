@@ -25,7 +25,7 @@ https://github.com/user-attachments/assets/f81e4caa-da95-4633-842e-62d66da5330c
 
 ### How It Works
  1) Manual control through IR remote (on/off, brightness).
- 2) Automatic control kicks in if no manual override:
+ 2) Automatic control kicks in when activity threshold is reached, and there is no manual override:
     * Lamp stays off if room is bright enough.
     * Lamp turns on when dark and motion is detected.
     * Time-based logic adjusts brightness levels throughout the day.
