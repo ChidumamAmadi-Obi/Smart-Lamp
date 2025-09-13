@@ -1,6 +1,5 @@
 # Smart-Lamp
-An ESP32-powered smart desk lamp that adjusts lighting based on ambient conditions and user activity. The system uses sensors to measure brightness, motion, and environmental factors, enabling both manual and predictive lighting control.
-
+The Smart Lamp is a predictive system built on the ESP32, employing a custom time-based learning algorithm, sensor fusion, and a multi-layered state machine to anticipate user needs.
 ### Demo
 Remote control Demontration
 
@@ -22,6 +21,20 @@ https://github.com/user-attachments/assets/f81e4caa-da95-4633-842e-62d66da5330c
   * **IR Receiver and Remote (38KHz)** - for remote control
   * **Transistor (TIP122G)** -to control lamp power
   * (Optional) **5mm LEDs** - for debugging and testing
+
+### Core Intelligence: The Prediction Engine (Predict.h)
+1) **Usage Logging & Time Slots:**
+   * The day is divided into 96 time slots (15-minute intervals).
+   * When the lamp is turned on/off via **manual control**, the system logs this event to the corresponding time slot in an RTC-retained array *(RTC_DATA_ATTR int8_t activity[96])*.
+   * This data persists through deep sleep, allowing the lamp to build a long-term memory of user habits.
+2) **Pattern Reinforcement and Decay:**
+   * Reinforcement: Manual interactions *activity[slot] += 1*.
+   * Decay: Every new day, all activity counts are multiplied by a *DECAY_FACTOR (0.99)*. This elegantly ensures recent **habits are more influential than older ones**, allowing the system to adapt over time.
+3) **Making a Prediction:**
+   * The engine checks the current time slot's activity level against a threshold *(ACTIVITY_THRESHOLD)*.
+   * **If (Activity >= Threshold) AND (Is Dark) AND (Motion Detected):** It predicts the lamp should turn on.
+   * The auto-mode brightness is set based on ambient light levels. it maps the isolated LUX reading to a PWM value on a scale, so the lamp is brighter in pitch darkness and dimmer in partial darkness.
+
 
 ### How It Works
  1) Manual control through IR remote (on/off, brightness).
