@@ -23,6 +23,8 @@ https://github.com/user-attachments/assets/f81e4caa-da95-4633-842e-62d66da5330c
   * **Transistor (TIP122G)** -to control lamp power
   * (Optional) **5mm LEDs** - for debugging and testing
 
+### How it Works
+<img width="588" height="486" alt="image" src="https://github.com/user-attachments/assets/7cca02f0-4ed7-4360-8e14-8e172a3521ca" />
 #### Core Intelligence: The Prediction Engine (Predict.h)
 1) **Usage Logging & Time Slots:**
    * The day is divided into 96 time slots (15-minute intervals).
