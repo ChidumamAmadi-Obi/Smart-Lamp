@@ -4,7 +4,9 @@ The Smart Lamp is a predictive system built on the ESP32, employing a custom tim
 ### Demo
 Remote control Demontration
 
-https://github.com/user-attachments/assets/f81e4caa-da95-4633-842e-62d66da5330c
+[](https://github.com/user-attachments/assets/f81e4caa-da95-4633-842e-62d66da5330c)
+
+![](https://github.com/user-attachments/assets/f81e4caa-da95-4633-842e-62d66da5330c)
 
 ### ✨ Core Functionality
   * Predictive Behavior - Learns user patterns and anticipates lighting needs
