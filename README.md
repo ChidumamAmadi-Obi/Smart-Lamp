@@ -8,7 +8,7 @@ Remote control Demontration
 
 ![](https://github.com/user-attachments/assets/f81e4caa-da95-4633-842e-62d66da5330c)
 
-### ✨ Core Functionality
+### Features
   * Predictive Behavior - Learns user patterns and anticipates lighting needs
   * Deep Sleep - Ultra low power mode when idle
   * Time-based Logic - Adjusts brightness levels throughout the day
@@ -25,43 +25,14 @@ Remote control Demontration
   * **Transistor (TIP122G)** -to control lamp power
   * (Optional) **5mm LEDs** - for debugging and testing
 
-### How it Works
+### Block Diagrams
 <img width="588" height="486" alt="image" src="https://github.com/user-attachments/assets/7cca02f0-4ed7-4360-8e14-8e172a3521ca" />
 
-#### Core Intelligence: The Prediction Engine (Predict.h)
-1) **Usage Logging & Time Slots:**
-   * The day is divided into 96 time slots (15-minute intervals).
-   * When the lamp is turned on/off via **manual control**, the system logs this event to the corresponding time slot in an RTC-retained array *(RTC_DATA_ATTR int8_t activity[96])*.
-   * This data persists through deep sleep, allowing the lamp to build a long-term memory of user habits.
-2) **Pattern Reinforcement and Decay:**
-   * Reinforcement: Manual interactions *activity[slot] += 1*.
-   * Decay: Every new day, all activity counts are multiplied by a *DECAY_FACTOR (0.99)*. This elegantly ensures recent **habits are more influential than older ones**, allowing the system to adapt over time.
-3) **Making a Prediction:**
-   * The engine checks the current time slot's activity level against a threshold *(ACTIVITY_THRESHOLD)*.
-   * **If (Activity >= Threshold) AND (Is Dark) AND (Motion Detected):** It predicts the lamp should turn on.
-   * The auto-mode brightness is set based on ambient light levels. it maps the isolated LUX reading to a PWM value on a scale, so the lamp is brighter in pitch darkness and dimmer in partial darkness.
-
-#### State Machine & Control Logic (Logic.h)
-1) **Manual Override**: Any IR command (ON, OFF, BRIGHTEN, DIM) puts the system into a manual override state for a set period. During this time automatic predictions are ignored.
-2) **Auto Toggle**: The IR command *IR_AUTO* gives the system permission to automatically control the lamp brghtness. 
-3) **Smooth Fading**: All brightness changes use a soft fade function (lampFade()), providing a professional and pleasant user experience instead of jarring jumps in light.
-
 #### Power Managment (SleepManager.h)
-The system operates on a hierarchy of power states for maximum efficiency
 <img width="962" height="353" alt="image" src="https://github.com/user-attachments/assets/765cefe9-b722-4aa6-92e8-7b2d4892bc5c" />
 1) **Active Mode (95-240)mA**: All systems online, processing sensors and logic.
 2) **Light Sleep (~0.8)mA**: Entered after a period of no motion, the CPU is paused, but RAM is retained. It wakes up periodically (e.g. every 5 minutes) to quickly check the PIR sensor.
 3) **Deep sleep (~10-150)µA**: Entered after extended light sleep with no motion or via IR command *IR_SLEEP*. The system is powered down, leaving only the RTC on, and the ability to wake at the press of a button.
-
-#### Summary of Technical Sophistication:
- * **Finite State Machine (FSM)** for managing operational modes.
- * **Exponential Moving Average (EMA)** for sensor filtering.
- * **Custom Time-Series Learning Algorithm** for prediction.
- * **Manual Override System** with a timeout.
- * **Professional Sensor Calibration** (Voltage Divider -> Resistance -> Lux).
- * **Isolated Sensor Reading** to avoid feedback loops.
- * **Multi-stage Power Management** (Active -> Light Sleep -> Deep Sleep).
- * **RTC-Retained Data** to persist learning across sleep/wake cycles.
 
 ### Setup Instructions 
 **1)** Open ArduinoIDE and ensure ESP32 board support is installed. (esp32 by Espressif Systems)
