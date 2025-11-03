@@ -26,10 +26,12 @@ Remote control Demontration
   * (Optional) **5mm LEDs** - for debugging and testing
 
 ### Block Diagrams
+#### Overall System Functionality
 <img width="588" height="486" alt="image" src="https://github.com/user-attachments/assets/7cca02f0-4ed7-4360-8e14-8e172a3521ca" />
 
 #### Power Managment (SleepManager.h)
 <img width="962" height="353" alt="image" src="https://github.com/user-attachments/assets/765cefe9-b722-4aa6-92e8-7b2d4892bc5c" />
+
 1) **Active Mode (95-240)mA**: All systems online, processing sensors and logic.
 2) **Light Sleep (~0.8)mA**: Entered after a period of no motion, the CPU is paused, but RAM is retained. It wakes up periodically (e.g. every 5 minutes) to quickly check the PIR sensor.
 3) **Deep sleep (~10-150)µA**: Entered after extended light sleep with no motion or via IR command *IR_SLEEP*. The system is powered down, leaving only the RTC on, and the ability to wake at the press of a button.
