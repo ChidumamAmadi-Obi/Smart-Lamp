@@ -40,14 +40,14 @@ Remote control Demontration
 **1)** Open ArduinoIDE and ensure ESP32 board support is installed. (esp32 by Espressif Systems)
 
 **2)** Start a new sketch, download and include the "IRremote by shirriff, z3t0, ArminJo" library.
-```
+```C
 #include "IRremote.hpp"
 ```
 #### Configuring IR remote Commands
 To determine the IR protocol and key codes used by your unique remote, follow this guide ![here](https://www.makerguides.com/ir-receiver-remote-arduino-tutorial/).
 
 **3.1)** Wire the output pin of the IR receiver to pin 2 of your ESP32 and flash the code below:
-```
+```C
 #include "IRremote.hpp"
 
 #define IR_RECEIVE_PIN 2
@@ -74,7 +74,7 @@ git clone https://github.com/ChidumamAmadi-Obi/Smart-Lamp.git
 cd Smart-Lamp/SmartLampESP32
 ```
 **3.4)** Open the *Config.h* file and replace the default IR command values with your observed key codes here:
-```
+```C
   // IR Remote Commands
   constexpr uint8_t IR_ON = 69;
   constexpr uint8_t IR_OFF = 71;
@@ -89,13 +89,13 @@ cd Smart-Lamp/SmartLampESP32
 *NOTE: IR:INVALID is a placeholder for "no valid command", leave this as 255 unless you need a special case.
 If your remote sends different bit lengths or protocols, make sure you’re using the correct mode in the IRremote library.*
 **4)** Open *Config.cpp* and update the wifi credentials to fit your home WiFi:
-```
+```C
 const char* ssid = "YOUR_SSID";
 const char* password   = "YOUR_PASSWORD";
 ```
 **5)** Open the SmartLampESP32.ino file with Arduino IDE.
 **6)** Connect sensors and components as shown in the wiring diagram.
-```
+```C
   // Pin Configuration
   constexpr uint8_t LDR_PIN = 4;
   constexpr uint8_t LAMP_PIN = 27;
