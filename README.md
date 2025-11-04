@@ -66,7 +66,7 @@ void loop() {
   }
 }
 ```
-**3.2)** Open the serial monitor and observe the values that print when the corresponding button is pressed on your IR remote.
+**3.2)** Open the serial monitor and observe the values that print when the corresponding button is pressed on your IR remote. <br>
   
 **3.3)** Clone this repository:
 ```
@@ -84,17 +84,17 @@ cd Smart-Lamp/SmartLampESP32
   constexpr uint8_t IR_SLEEP = 67;
   constexpr uint8_t IR_INVALID = 255;
 ```
-**3.5)** Save this file,your lamp will now respond to your custom remote buttons.
+**3.5)** Save this file,your lamp will now respond to your custom remote buttons. <br>
 
 *NOTE: IR:INVALID is a placeholder for "no valid command", leave this as 255 unless you need a special case.
-If your remote sends different bit lengths or protocols, make sure you’re using the correct mode in the IRremote library.*
+If your remote sends different bit lengths or protocols, make sure you’re using the correct mode in the IRremote library.* <br>
 **4)** Open *Config.cpp* and update the wifi credentials to fit your home WiFi:
 ```C
 const char* ssid = "YOUR_SSID";
 const char* password   = "YOUR_PASSWORD";
 ```
-**5)** Open the SmartLampESP32.ino file with Arduino IDE.
-**6)** Connect sensors and components as shown in the wiring diagram.
+**5)** Open the SmartLampESP32.ino file with Arduino IDE. <br>
+**6)** Connect sensors and components as shown in the wiring diagram. <br>
 ```C
   // Pin Configuration
   constexpr uint8_t LDR_PIN = 4;
@@ -107,9 +107,9 @@ const char* password   = "YOUR_PASSWORD";
   constexpr uint8_t ERROR_LED_PIN = 33;
 ```
 
-<img width="971" height="728" alt="image" src="https://github.com/user-attachments/assets/018cb398-74d9-4d2a-8f06-2845002019ad" />
+<img width="971" height="728" alt="image" src="https://github.com/user-attachments/assets/018cb398-74d9-4d2a-8f06-2845002019ad" /> <br>
 
-**6)** Flash the code to your ESP32.
+**6)** Flash the code to your ESP32. <br>
 **7)** Power the circuit and observe lamp control via sensors and manual override.
 
 ### Roadmap
